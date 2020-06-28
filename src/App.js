@@ -1,39 +1,61 @@
 import React, {useState, useEffect} from 'react'
 import './App.css'
 import Axios from 'axios'
-import Main from "./components/Main/Main"
+import Form from "./components/Form/Form"
+import Container from "./components/GlobalComponents/Container/Container"
 
 const App = () => {
   const [search, setSearch] = useState("ericholdridge")
-  const [profileOverview, setProfileOverview] = useState([])
-  // Get the github users
-  // https://api.github.com/users/${search}
-
-  // Get the github repos
-  // https://api.github.com/users/${search}/repos
-
-  // Github overview page
-  // https://api.github.com/users/${search}/repos?per_page=8&sort=asc
+  const [user, setUser] = useState()
+  const [overview, setOverview] = useState()
+  const [repos, setRepos] = useState()
+  const [followers, setFollowers] = useState()
 
   // Github followers
   // https://api.github.com/users/${search}/followers
 
-  useEffect(() => {
+  const getData = (e) => {
+    e.preventDefault()
+    handleUser()
     handleOverview()
-  }, [])
+    handleRepos()
+    handleFollowers()
+  }
 
-  // Get the github overview data when page loads
+  // Handle the user search
+  const handleUser = () => {
+    Axios(`https://api.github.com/users/${search}`).then(({data}) => {
+      setUser(data)
+    })
+  }
+
+  // Display the 8 repos
   const handleOverview = () => {
     Axios(`https://api.github.com/users/${search}/repos?per_page=8&sort=asc`).then(({data}) => {
-        const repoOverview = data
-        console.log(repoOverview)
-        setProfileOverview(repoOverview)
-      })
+      setOverview(data)
+    })
+  }
+
+  // Display all of the user repos
+  const handleRepos = () => {
+    Axios(`https://api.github.com/users/${search}/repos`).then(({data}) => {
+      setRepos(data)
+    })
+  }
+
+  // Get followers
+  const handleFollowers = () => {
+    Axios(`https://api.github.com/users/${search}/followers`).then(({data}) => {
+      setFollowers(data)
+    })
   }
 
   return (
     <div className="App">
-      <Main profileOverview={profileOverview}/>
+      <Form search={search} setSearch={setSearch} getData={getData}/>
+      <Container>
+
+      </Container>
     </div>
   );
 }
