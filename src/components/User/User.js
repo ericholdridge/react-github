@@ -20,7 +20,7 @@ const User = ({user}) => {
         </div>
         <div className="contact">
           <span>{user.location}</span>
-          <span><a href="www.eholdridge.com">{user.blog}</a></span>
+          <span><a href={user.blog} target="_blank">{user.blog}</a></span>
         </div>
       </div>
   )
