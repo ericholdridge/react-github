@@ -1,26 +1,29 @@
-import React, {useState, useEffect} from 'react'
+/** @jsx jsx */
+import { css, jsx } from '@emotion/core'
+import {useState, useEffect} from 'react'
 import './App.css'
 import Axios from 'axios'
 import Form from "./components/Form/Form"
-import Container from "./components/GlobalComponents/Container/Container"
+import Overview from "./components/Overview/Overview";
 
 const App = () => {
   const [search, setSearch] = useState("ericholdridge")
-  const [user, setUser] = useState()
-  const [overview, setOverview] = useState()
-  const [repos, setRepos] = useState()
-  const [followers, setFollowers] = useState()
+  const [user, setUser] = useState([])
+  const [overview, setOverview] = useState([])
+  const [active, setActive] = useState("Overview");
+  const [repos, setRepos] = useState([])
+  const [followers, setFollowers] = useState([])
 
-  // Github followers
-  // https://api.github.com/users/${search}/followers
-
-  const getData = (e) => {
-    e.preventDefault()
+  const getData = () => {
     handleUser()
     handleOverview()
     handleRepos()
     handleFollowers()
   }
+
+  useEffect(() => {
+    getData()
+  }, []);
 
   // Handle the user search
   const handleUser = () => {
@@ -36,7 +39,7 @@ const App = () => {
     })
   }
 
-  // Display all of the user repos
+  // Display all of the users repos
   const handleRepos = () => {
     Axios(`https://api.github.com/users/${search}/repos`).then(({data}) => {
       setRepos(data)
@@ -53,9 +56,7 @@ const App = () => {
   return (
     <div className="App">
       <Form search={search} setSearch={setSearch} getData={getData}/>
-      <Container>
-
-      </Container>
+      <Overview user={user} overview={overview} active={active} setActive={setActive} followers={followers} repos={repos}/>
     </div>
   );
 }
