@@ -32,6 +32,7 @@ const styles = css`
     justify-content: space-between;
     margin: auto;
     min-height: 560px;
+    max-height: 560px;
     .navigation {
       width: 100%;
       min-width: 850px;

@@ -19,6 +19,7 @@ const App = () => {
     handleOverview()
     handleRepos()
     handleFollowers()
+    setSearch("")
   }
 
   useEffect(() => {
